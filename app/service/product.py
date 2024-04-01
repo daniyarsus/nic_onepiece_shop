@@ -28,7 +28,7 @@ class ProductService:
 
     async def get_product_by_id(self, product_id: int) -> dict:
         try:
-            product = await self.products_repo.get_one(product_id)
+            product = await self.products_repo.get_one(id=product_id)
             return {
                 'id': product.id,
                 'name': product.name,

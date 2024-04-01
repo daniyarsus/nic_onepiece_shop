@@ -3,6 +3,7 @@ from typing import Annotated, Union
 from datetime import datetime, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
 
 from app.utils.help.authenticate_user import get_authenticate_user
 
@@ -63,8 +64,8 @@ async def verify_code_endpoint(
    "/signin/token-username"
 )
 async def create_token_endpoint(
-        data: LoginUsernameSchema,
-        users_service: Annotated[LoginService, Depends(login_service)]
+        users_service: Annotated[LoginService, Depends(login_service)],
+        data: OAuth2PasswordRequestForm = Depends()
 ):
     result = await users_service.login_by_username(data)
     return result

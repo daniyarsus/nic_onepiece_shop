@@ -25,9 +25,9 @@ class BalanceService:
 
             new_balance = belly + user_balance
 
-            result = await self.balance_repo.edit_one({"balance": new_balance}, id=payload["id"])
+            await self.balance_repo.edit_one({"balance": new_balance}, id=payload["id"])
 
-            return result
+            return {'new_balance': new_balance}
 
         except Exception as e:
             raise HTTPException(
@@ -40,8 +40,9 @@ class BalanceService:
             balance_dict = data.dict()
             balance_dict["id"] = int(payload["id"])
 
-            result = await self.balance_repo.update_one(balance_dict)
-            return result
+            await self.balance_repo.edit_one({'card_number': balance_dict['card_number']}, id=balance_dict['id'])
+
+            return {'new_card_number': balance_dict['card_number']}
 
         except Exception as e:
             raise HTTPException(
@@ -55,7 +56,7 @@ class BalanceService:
 
             user_balance = balance.balance
 
-            return user_balance
+            return {'user_balance': user_balance}
 
         except Exception as e:
             raise HTTPException(
@@ -82,9 +83,9 @@ class BalanceService:
                     detail="Недостаточно средств на счету!"
                 )
 
-            user_update = await self.balance_repo.edit_one({"balance": difference}, id=payload["id"])
+            await self.balance_repo.edit_one({"balance": difference}, id=payload["id"])
 
-            return user_update
+            return {'difference': difference}
 
         except Exception as e:
             raise HTTPException(

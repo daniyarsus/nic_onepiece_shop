@@ -8,4 +8,5 @@ class ReadProductModel(BaseModel):
     description: Optional[str]
     price: float
     currency: str
+    type: str
     status: bool

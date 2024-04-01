@@ -79,7 +79,7 @@ class LoginService:
             )
         return user
 
-    async def login_by_username(self, data: LoginUsernameSchema):
+    async def login_by_username(self, data):
         try:
             user = await self._get_user_by_username(data.username)
 
