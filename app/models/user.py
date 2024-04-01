@@ -11,13 +11,17 @@ from app.schemas.read_user import ReadUserModel
 class User(Base):
     __tablename__ = 'users'
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     username: Mapped[str] = mapped_column(unique=True)
     password: Mapped[str]
     email: Mapped[str] = mapped_column(unique=True)
     phone: Mapped[int] = mapped_column(BigInteger, unique=True)
-    #phone = Column(BigInteger)
+    name: Mapped[str] = mapped_column(nullable=False)
+    lastname: Mapped[str] = mapped_column(nullable=False)
+    card_number: Mapped[int] = mapped_column(BigInteger, nullable=True)
+    balance: Mapped[float] = mapped_column(default=0.0)
     is_verified: Mapped[bool] = mapped_column(default=False)
+    role: Mapped[int] = mapped_column(default=0)
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -43,5 +47,9 @@ class User(Base):
             password=self.password,
             email=self.email,
             phone=self.phone,
+            name=self.name,
+            lastname=self.lastname,
+            card_number=self.card_number,
+            balance=self.balance,
             is_verified=self.is_verified
         )

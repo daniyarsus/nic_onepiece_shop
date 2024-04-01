@@ -5,6 +5,18 @@ from app.service.login import LoginService
 from app.service.password import PasswordService
 from app.service.logout import LogoutService
 
+from app.service.balance import BalanceService
+
+
+from app.repository.product import ProductRepository
+
+from app.service.product import ProductService
+
+
+from app.repository.payment import PaymentRepository
+
+from app.service.payment import PaymentService
+
 
 def register_service():
     return RegisterService(UserRepository)
@@ -20,3 +32,15 @@ def password_service():
 
 def logout_service():
     return LogoutService
+
+
+def product_service():
+    return ProductService(ProductRepository)
+
+
+def payment_service():
+    return PaymentService(PaymentRepository)
+
+
+def balance_service():
+    return BalanceService(UserRepository)

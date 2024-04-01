@@ -19,9 +19,6 @@ from app.settings.redis.connection import redis_client_auth
 from app.utils.help.generate_code import generate_verification_code
 
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
 class PasswordService:
     def __init__(self, users_repo: AbstractRepository):
         self.users_repo: AbstractRepository = users_repo()

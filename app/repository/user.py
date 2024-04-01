@@ -1,4 +1,4 @@
-from app.repository.base import SQLAlchemyRepository, RedisRepository
+from app.repository.base import SQLAlchemyRepository
 
 from app.models.user import User
 

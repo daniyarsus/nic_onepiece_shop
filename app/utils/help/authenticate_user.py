@@ -36,13 +36,15 @@ async def get_authenticate_user(token: str = Depends(oauth2_scheme)):
     phone: str = payload.get("phone")
     email: str = payload.get("email")
     username: str = payload.get("username")
+    role: str = payload.get("role")
 
     result = {
         "id": id,
         "username": username,
         "email": email,
         "phone": phone,
-        "session_id": session_id
+        "session_id": session_id,
+        "role": role
     }
 
     return result

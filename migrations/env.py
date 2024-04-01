@@ -5,7 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from app.settings.db.connection import Base, DB_URL
+from app.settings.db.connection import Base, sync_DB_URL
 
 
 config = context.config
@@ -34,7 +34,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option(DB_URL)
+    url = config.get_main_option(sync_DB_URL)
     context.configure(
         url=url,
         target_metadata=target_metadata,

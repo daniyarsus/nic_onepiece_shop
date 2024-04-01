@@ -3,11 +3,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.settings.db.connection import async_engine, Base, DB_URL
+from sqladmin import Admin
+
+from app.settings.db.connection import async_engine, Base, sync_DB_URL, sync_engine
 
 from app.api.routers import all_routers
 
-from app.models.payment import Payment
+from app.admin.admin_views import all_views
 
 
 async def create_tables():
@@ -31,6 +33,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+admin = Admin(app, sync_engine)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -48,3 +52,6 @@ async def index():
 
 for router in all_routers:
     app.include_router(router)
+
+for view in all_views:
+    admin.add_view(view)

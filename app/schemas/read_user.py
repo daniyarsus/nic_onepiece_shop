@@ -7,6 +7,10 @@ class ReadUserModel(BaseModel):
     password: str
     email: EmailStr
     phone: int
+    name: str
+    lastname: str
+    card_number: int
+    balance: float
     is_verified: bool
 
     class Config:

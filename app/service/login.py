@@ -25,9 +25,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = settings.jwt_config.ACCESS_TOKEN_EXPIRE_MINUTES
 REFRESH_TOKEN_EXPIRE_DAYS = settings.jwt_config.REFRESH_TOKEN_EXPIRE_DAYS
 
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
 class LoginService:
     def __init__(self, user_repo: AbstractRepository):
         self.user_repo = user_repo()
@@ -106,7 +103,8 @@ class LoginService:
                     "username": user.username,
                     "email": user.email,
                     "phone": user.phone,
-                    "session_id": session_id
+                    "session_id": session_id,
+                    "role": user.role
                 }
             )
             refresh_token = await self._create_refresh_token(
@@ -115,7 +113,8 @@ class LoginService:
                     "username": user.username,
                     "email": user.email,
                     "phone": user.phone,
-                    "session_id": session_id
+                    "session_id": session_id,
+                    "role": user.role
                 }
             )
 
@@ -154,7 +153,8 @@ class LoginService:
                     "username": user.username,
                     "email": user.email,
                     "phone": user.phone,
-                    "session_id": session_id
+                    "session_id": session_id,
+                    "role": user.role
                 }
             )
             refresh_token = await self._create_refresh_token(
@@ -163,7 +163,8 @@ class LoginService:
                     "username": user.username,
                     "email": user.email,
                     "phone": user.phone,
-                    "session_id": session_id
+                    "session_id": session_id,
+                    "role": user.role
                 }
             )
 
@@ -202,7 +203,8 @@ class LoginService:
                     "username": user.username,
                     "email": user.email,
                     "phone": user.phone,
-                    "session_id": session_id
+                    "session_id": session_id,
+                    "role": user.role
                 }
             )
             refresh_token = await self._create_refresh_token(
@@ -211,7 +213,8 @@ class LoginService:
                     "username": user.username,
                     "email": user.email,
                     "phone": user.phone,
-                    "session_id": session_id
+                    "session_id": session_id,
+                    "role": user.role
                 }
             )
 
@@ -244,7 +247,8 @@ class LoginService:
                             "username": decoded_token.get("username"),
                             "email": decoded_token.get("email"),
                             "phone": decoded_token.get("phone"),
-                            "session_id": str(uuid.uuid4())
+                            "session_id": str(uuid.uuid4()),
+                            "role": user.role
                         }
                     )
 
