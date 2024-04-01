@@ -21,7 +21,7 @@ class PaymentService:
             payment_dict['user_id'] = int(payload['id'])
 
             # Make request to calculate-price
-            calculate_price_url = "http://127.0.0.1:8000/api/v1/calculate-price"
+            calculate_price_url = "https://onepieceshop-production.up.railway.app/api/v1/calculate-price"
 
             async with httpx.AsyncClient() as client:
                 calculate_price_response = await client.post(
@@ -44,7 +44,7 @@ class PaymentService:
             jwt = await redis_client_auth.get(f"jwt_user_id:{str(payload['id'])}_session_id:{payload['session_id']}")
             jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJyb290MTIzNCIsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsInBob25lIjo4Nzc3MTg4ODMzMywic2Vzc2lvbl9pZCI6ImMzNjAyNmU1LTZlOWQtNDA5Zi04OWQ4LWUyMzZjOWE3ODBhYSIsInJvbGUiOjAsImV4cCI6MzkwMzY2OTU0OTV9.8SOnV7HqoJozkCNkngDxgbUBz-iB9zy7m8Aw3ETGIQA"
 
-            get_difference_balance_url = "http://127.0.0.1:8000/api/v1/get-difference-balance"
+            get_difference_balance_url = "https://onepieceshop-production.up.railway.app/api/v1/get-difference-balance"
 
             async with httpx.AsyncClient() as client:
                 get_difference_balance_response = await client.post(
