@@ -11,7 +11,7 @@ from app.service.balance import BalanceService
 from app.api.dependencies import balance_service
 
 
-router = APIRouter(prefix='/api/v1', tags=['User endpoints - API'])
+router = APIRouter(prefix='/api/v1', tags=['Balance endpoints - API'])
 
 
 @router.put("/change-balance")
