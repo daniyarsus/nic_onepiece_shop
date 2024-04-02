@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 
-from sqlalchemy import BigInteger
+from sqlalchemy import BigInteger, String
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.dialects.postgresql import ARRAY
 
 from app.settings.db.connection import Base
 
@@ -18,7 +19,7 @@ class Product(Base):
     currency: Mapped[str] = mapped_column(default="belly")
     type: Mapped[str] = mapped_column(nullable=False)
     status: Mapped[bool] = mapped_column(default=False)
-    photo: Mapped[str] = mapped_column(nullable=True)
+    photo: Mapped[list] = mapped_column(ARRAY(String), nullable=True)
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(default=datetime.utcnow, onupdate=datetime.utcnow)
 
