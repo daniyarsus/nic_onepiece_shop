@@ -9,5 +9,5 @@ class ProfileSchema(BaseModel):
     lastname: Optional[str] = None
 
 
-class ProfilePhotoSchema(ProfileSchema):
+class ProfilePhotoSchema(BaseModel):
     photo: Annotated[str, Field(...)]
