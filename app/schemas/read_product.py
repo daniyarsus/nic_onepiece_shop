@@ -10,3 +10,7 @@ class ReadProductModel(BaseModel):
     currency: str
     type: str
     status: bool
+    photo: str
+
+    class Config:
+        from_attributes = True

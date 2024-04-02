@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File,
 
 from app.utils.help.authenticate_user import get_authenticate_user
 
-from app.schemas.profile import ProfileSchema
+from app.schemas.profile import ProfileSchema, ProfilePhotoSchema
 from app.service.profile import ProfileService
 from app.api.dependencies import profile_service
 
@@ -23,22 +23,13 @@ async def get_info_endpoint(
     return result
 
 
-@router.post("/set-avatar")
+@router.post("/change-photo")
 async def set_avatar_endpoint(
-        profiles_service: Annotated[ProfileService, Depends(profile_service)],
-        data: UploadFile = File(...),
-        payload: dict = Depends(get_authenticate_user)
-):
-    result = await profiles_service.set_avatar(data, payload)
-    return result
-
-
-@router.get("/get-avatar")
-async def get_avatar_endpoint(
+        data: ProfilePhotoSchema,
         profiles_service: Annotated[ProfileService, Depends(profile_service)],
         payload: dict = Depends(get_authenticate_user)
 ):
-    result = await profiles_service.get_avatar(payload)
+    result = await profiles_service.change_photo(data, payload)
     return result
 
 

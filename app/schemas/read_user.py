@@ -11,6 +11,7 @@ class ReadUserModel(BaseModel):
     lastname: str
     card_number: int
     balance: float
+    photo: str
     is_verified: bool
 
     class Config:
