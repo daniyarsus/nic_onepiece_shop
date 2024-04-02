@@ -59,10 +59,10 @@ class PasswordService:
             server.quit()
 
             return JSONResponse(
-                status_code=200,
                 content={
                     "message": "Письмо с кодом отправлено успешно!"
-                }
+                },
+                status_code=200
             )
 
         except Exception as e:
@@ -113,8 +113,10 @@ class PasswordService:
                 #     await redis_client_auth.delete(key)
 
             return JSONResponse(
-                status_code=200,
-                content={"message": "Пароль успешно изменен!"}
+                content={
+                    "message": "Пароль успешно изменен!"
+                },
+                status_code=200
             )
 
         except Exception as e:

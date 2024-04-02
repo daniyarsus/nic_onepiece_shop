@@ -7,6 +7,8 @@ from app.service.logout import LogoutService
 
 from app.service.balance import BalanceService
 
+from app.service.profile import ProfileService
+
 
 from app.repository.product import ProductRepository
 
@@ -44,3 +46,9 @@ def payment_service():
 
 def balance_service():
     return BalanceService(UserRepository)
+
+
+def profile_service():
+    return ProfileService(UserRepository)
+
+

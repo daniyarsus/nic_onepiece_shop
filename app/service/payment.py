@@ -1,12 +1,17 @@
 from typing import Optional, List, Dict
 
 import httpx
+
 from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
+from app.settings.config import settings
+
 from app.settings.redis.connection import redis_client_auth
+
 from app.repository.base import AbstractRepository
+
 from app.schemas.payment import PaymentSchema
 
 
@@ -14,14 +19,12 @@ class PaymentService:
     def __init__(self, payments_repo: AbstractRepository):
         self.payment_repo: AbstractRepository = payments_repo()
 
-    async def create_payment(self, data: PaymentSchema, payload: Dict[str, str]) -> Optional[
-        JSONResponse | HTTPException]:
+    async def create_payment(self, data: PaymentSchema, payload: Dict[str, str]) -> Optional[JSONResponse | HTTPException]:
         try:
             payment_dict = data.dict()
             payment_dict['user_id'] = int(payload['id'])
 
-            # Make request to calculate-price
-            calculate_price_url = "https://onepieceshop-production.up.railway.app/api/v1/calculate-price"
+            calculate_price_url = f"{settings.host_config.HOST}/api/v1/calculate-price"
 
             async with httpx.AsyncClient() as client:
                 calculate_price_response = await client.post(
@@ -40,11 +43,16 @@ class PaymentService:
             payment_dict["items_id"] = data.items_id
             payment_dict["amount"] = total_price
             payment_dict["place"] = data.place
+            # ToDo - add payment status functionality
+            payment_dict["status"] = True
 
-            jwt = await redis_client_auth.get(f"jwt_user_id:{str(payload['id'])}_session_id:{payload['session_id']}")
-            jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJyb290MTIzNCIsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsInBob25lIjo4Nzc3MTg4ODMzMywic2Vzc2lvbl9pZCI6ImMzNjAyNmU1LTZlOWQtNDA5Zi04OWQ4LWUyMzZjOWE3ODBhYSIsInJvbGUiOjAsImV4cCI6MzkwMzY2OTU0OTV9.8SOnV7HqoJozkCNkngDxgbUBz-iB9zy7m8Aw3ETGIQA"
+            payload_id = str(payload['id'])
+            payload_session_id = payload['session_id']
 
-            get_difference_balance_url = "https://onepieceshop-production.up.railway.app/api/v1/get-difference-balance"
+            jwt = await redis_client_auth.get(f"jwt_user_id:{payload_id}_session_id:{payload_session_id}")
+            jwt = jwt.decode("utf-8")
+
+            get_difference_balance_url = f"{settings.host_config.HOST}/api/v1/get-difference-balance"
 
             async with httpx.AsyncClient() as client:
                 get_difference_balance_response = await client.post(
@@ -63,10 +71,7 @@ class PaymentService:
             return result
 
         except Exception as e:
-            raise HTTPException(
-                status_code=500,
-                detail=str(e)
-            )
+            raise e
 
     async def get_all_payments(self, payload: Dict[str, str]) -> Optional[List[Dict[str, str]]]:
         try:

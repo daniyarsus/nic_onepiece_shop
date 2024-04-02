@@ -1,7 +1,10 @@
 import os
+
 from dataclasses import dataclass
-from pydantic_settings import BaseSettings
+
 from pydantic import Field
+
+from pydantic_settings import BaseSettings
 
 
 class EnvSettings(BaseSettings):
@@ -25,6 +28,8 @@ class EnvSettings(BaseSettings):
     SMTP_PORT: str = Field(..., env='SMTP_PORT')
     SMTP_API_KEY: str = Field(..., env='SMTP_API_KEY')
     SMTP_EMAIL_FROM: str = Field(..., env='SMTP_EMAIL_FROM')
+
+    HOST: str = Field(..., env='HOST')
 
     class Config:
         env_file = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), ".env")
@@ -67,12 +72,18 @@ class SMTPConfig:
 
 
 @dataclass
+class HostConfig:
+    HOST: str = env_settings.HOST
+
+
+@dataclass
 class Settings:
     def __init__(self):
         self.pg_database = PostgresDatabaseConfig()
         self.jwt_config = JWTConfig()
         self.redis_config = RedisConfig()
         self.smtp_config = SMTPConfig()
+        self.host_config = HostConfig()
 
 
 settings: Settings = Settings()

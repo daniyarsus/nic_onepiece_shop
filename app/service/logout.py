@@ -38,7 +38,8 @@ class LogoutService:
             return JSONResponse(
                 content={
                     "message": "Пользователь успешно вышел из сессии!"
-                }
+                },
+                status_code=200
             )
 
         except Exception as e:
