@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 
 class ReadProductModel(BaseModel):
@@ -10,7 +10,7 @@ class ReadProductModel(BaseModel):
     currency: str
     type: str
     status: bool
-    photo: str
+    photo: List[str]
 
     class Config:
         from_attributes = True
