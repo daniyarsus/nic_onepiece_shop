@@ -23,7 +23,9 @@ class ProductService:
                      'description': product.description,
                      'price': product.price,
                      'currency': product.currency,
-                     'type': product.type}
+                     'type': product.type,
+                     'photo': product.photo
+                     }
                     for product in all_products
                 ],
                 status_code=200
@@ -46,7 +48,8 @@ class ProductService:
                     'description': product.description,
                     'price': product.price,
                     'currency': product.currency,
-                    'type': product.type
+                    'type': product.type,
+                    'photo': product.photo
                 },
                 status_code=200
             )

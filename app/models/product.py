@@ -18,6 +18,7 @@ class Product(Base):
     currency: Mapped[str] = mapped_column(default="belly")
     type: Mapped[str] = mapped_column(nullable=False)
     status: Mapped[bool] = mapped_column(default=False)
+    photo: Mapped[str] = mapped_column(nullable=True)
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -32,5 +33,6 @@ class Product(Base):
             price=self.price,
             currency=self.currency,
             type=self.type,
-            status=self.status
+            status=self.status,
+            photo=self.photo
         )

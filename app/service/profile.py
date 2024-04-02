@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse, FileResponse, StreamingResponse
 
 from app.repository.base import AbstractRepository
 
-from app.schemas.profile import ProfileSchema
+from app.schemas.profile import ProfileSchema, ProfilePhotoSchema
 
 
 class ProfileService:
@@ -23,7 +23,8 @@ class ProfileService:
                     "id": profile.id,
                     "username": profile.username,
                     "email": profile.email,
-                    "phone": profile.phone
+                    "phone": profile.phone,
+                    "photo": profile.photo
                 },
                 status_code=200
             )
@@ -34,31 +35,37 @@ class ProfileService:
                 detail=str(e)
             )
 
-    async def set_avatar(self, data: UploadFile, payload: dict) -> Optional[JSONResponse | HTTPException]:
-        user_dir = f"media/user/{payload['id']}"
-        if not os.path.exists(user_dir):
-            os.makedirs(user_dir)
+    async def change_photo(self, data: ProfilePhotoSchema, payload: dict) -> Optional[JSONResponse | HTTPException]:
+        try:
+            profile_dict = data.dict()
+            profile_dict['id'] = payload['id']
 
-        data.filename = "avatar.jpg"
-        with open(f"media/user/{payload['id']}/{data.filename}", "wb") as buffer:
-            buffer.write(data.file.read())
+            await self.profile_repo.edit_one(
+                {
+                    'photo': profile_dict['photo']
+                },
+                id=profile_dict['id']
+            )
 
-        return JSONResponse(
-            content={
-                "message": "Аватар успешно установлен!"
-            },
-            status_code=200
-        )
+            return JSONResponse(
+                content={
+                    "message": "Фотография успешно изменена!"
+                },
+                status_code=200
+            )
 
-    async def get_avatar(self, payload: dict) -> Optional[JSONResponse | HTTPException]:
-        return FileResponse(f"media/user/{payload['id']}/avatar.jpg", media_type="image/jpeg")
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=str(e)
+            )
 
     async def update_profile(self, data: ProfileSchema, payload: dict) -> Optional[JSONResponse | HTTPException]:
         try:
             profile_dict = data.dict()
             profile_dict['id'] = payload['id']
 
-            result = await self.profile_repo.edit_one(
+            await self.profile_repo.edit_one(
                 {
                     'username': profile_dict['username'],
                     'name': profile_dict['name'],
@@ -66,6 +73,7 @@ class ProfileService:
                 },
                 id=profile_dict['id']
             )
+
             return JSONResponse(
                 content={
                     "message": "Пользователь успешно сменил данные!"

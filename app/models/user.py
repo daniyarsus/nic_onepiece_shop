@@ -20,6 +20,7 @@ class User(Base):
     lastname: Mapped[str] = mapped_column(nullable=False)
     card_number: Mapped[int] = mapped_column(BigInteger, nullable=True)
     balance: Mapped[float] = mapped_column(default=0.0)
+    photo: Mapped[str] = mapped_column(nullable=True)
     is_verified: Mapped[bool] = mapped_column(default=False)
     role: Mapped[int] = mapped_column(default=0)
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
@@ -51,5 +52,6 @@ class User(Base):
             lastname=self.lastname,
             card_number=self.card_number,
             balance=self.balance,
+            photo=self.photo,
             is_verified=self.is_verified
         )
