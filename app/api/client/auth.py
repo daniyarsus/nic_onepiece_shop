@@ -93,7 +93,7 @@ async def create_token_endpoint(
     return result
 
 
-@router.post("/signin/update-refresh-token")
+@router.post("/signin/refresh-token")
 async def update_refresh_token_endpoint(
         data: UpdateRefreshTokenSchema,
         users_service: Annotated[LoginService, Depends(login_service)]
