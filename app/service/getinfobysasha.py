@@ -19,7 +19,9 @@ def get_info(payload: dict):
         "phone": user_info.phone,
         "name": user_info.name,
         "lastname": user_info.lastname,
-        "cart_number": user_info.card_number
+        "card_number": user_info.card_number,
+        "balance": user_info.balance,
+        "photo": user_info.photo
     }
 
 
