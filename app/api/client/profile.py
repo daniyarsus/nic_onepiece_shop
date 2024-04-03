@@ -9,17 +9,17 @@ from app.utils.help.authenticate_user import get_authenticate_user
 from app.schemas.profile import ProfileSchema, ProfilePhotoSchema
 from app.service.profile import ProfileService
 from app.api.dependencies import profile_service
+from app.service.getinfobysasha import get_info
 
 
 router = APIRouter(prefix='/api/v1', tags=['Profile endpoints - API'])
 
 
 @router.get("/get-info")
-async def get_info_endpoint(
-        profiles_service: Annotated[ProfileService, Depends(profile_service)],
-        payload: dict = Depends(get_authenticate_user)
+def get_info_endpoint(
+    payload:dict = Depends(get_authenticate_user)
 ):
-    result = await profiles_service.get_profile(payload)
+    result = get_info(payload)
     return result
 
 
@@ -41,3 +41,4 @@ async def update_profile_endpoint(
 ):
     result = await profiles_service.update_profile(data, payload)
     return result
+
