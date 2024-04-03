@@ -169,6 +169,10 @@ class LoginService:
             )
 
             await redis_client_auth.set(name=f"jwt_user_id:{str(user.id)}_session_id:{session_id}",
+                                        value=access_token,
+                                        ex=settings.jwt_config.ACCESS_TOKEN_EXPIRE_MINUTES)
+
+            await redis_client_auth.set(name=f"jwt_user_id:{str(user.id)}_session_id:{session_id}",
                                         value=refresh_token,
                                         ex=settings.jwt_config.REFRESH_TOKEN_EXPIRE_DAYS)
 
@@ -219,6 +223,10 @@ class LoginService:
             )
 
             await redis_client_auth.set(name=f"jwt_user_id:{str(user.id)}_session_id:{session_id}",
+                                        value=access_token,
+                                        ex=settings.jwt_config.ACCESS_TOKEN_EXPIRE_MINUTES)
+
+            await redis_client_auth.set(name=f"jwt_user_id:{str(user.id)}_session_id:{session_id}",
                                         value=refresh_token,
                                         ex=settings.jwt_config.REFRESH_TOKEN_EXPIRE_DAYS)
 
@@ -252,7 +260,11 @@ class LoginService:
                         }
                     )
 
-                    await redis_client_auth.set(name=f"jwt_user_id:{str(user_id)}_session_id:{session_id}",
+                    await redis_client_auth.set(name=f"jwt_user_id:{str(user.id)}_session_id:{session_id}",
+                                                value=access_token,
+                                                ex=settings.jwt_config.ACCESS_TOKEN_EXPIRE_MINUTES)
+
+                    await redis_client_auth.set(name=f"jwt_user_id:{str(user.id)}_session_id:{session_id}",
                                                 value=refresh_token,
                                                 ex=settings.jwt_config.REFRESH_TOKEN_EXPIRE_DAYS)
 
